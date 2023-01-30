@@ -30,4 +30,4 @@ python src/scan-gui.py --input=input.png --output=output.png
 
 This opens a `matplotlib` screen. Drag the four points to the corners of the document in the image. Once the points cover the entire document, close the window. The scanned image will be saved to the output location.
 
-Alternatively, the `Scanner` class in `scanner.py` can be used in other developments. 
+Alternatively, the `scan` function in `scanner.py` can be directly used.
