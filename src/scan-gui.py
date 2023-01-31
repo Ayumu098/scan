@@ -10,7 +10,7 @@ from scan import scan
 def get_file_locations() -> tuple[str]:
     """
     Obtains the file location of the image to be scanned and
-    and the file location where the scanned imaged will be saved via cli. 
+    and the file location where the scanned imaged will be saved via cli.
 
     Returns:
         tuple[str]: the input_filepath and output_filepath from cli in a tuple
@@ -39,35 +39,46 @@ def main(input_filepath: str, output_filepath: str):
         input_filepath (str): File location of the image to be scanned.
         output_filepath (str): File location where the scanned imaged will be saved
     """
-    
+
     # Matplotlib settings
     figure, ax = plt.subplots(1,2, gridspec_kw = {'wspace':0, 'hspace':0})
-    
+
     for a in ax:
         a.set_xticks([])
         a.set_yticks([])
-        
+
     plt.tight_layout()
-    
+
     # Load source image
     image = plt.imread(input_filepath)
-    
+
     ax[0].imshow(image)
     ax[1].imshow(image)
-    
+
     def onselect(verts):
         """Displays the scanned image in the right subplot when the user adjusts the selector or finishes making the selector.
 
         Args:
-            verts: List of corners [.x, .y] of the polygon selected by the user. 
+            verts: List of corners [.x, .y] of the polygon selected by the user.
         """
         scanned_image = scan(image, verts)
         ax[1].imshow(scanned_image)
-    
+
     selector = PolygonSelector(ax[0], onselect)
     
-    plt.show()
+    # Create a predefined selector in the center of the image 
+    center_y, center_x = image.shape[0]//2, image.shape[1]//2
+    space_x,  space_y  = max(int(0.2*center_x), 1), max(int(0.2*center_y), 1)
     
+    selector.verts = [
+        [center_x-space_x, center_y-space_y],
+        [center_x+space_x, center_y-space_y],
+        [center_x+space_x, center_y+space_y],
+        [center_x-space_x, center_y+space_y],
+    ]
+
+    plt.show()
+
     # Save image on successful exit
     plt.imsave(output_filepath, scan(image, selector.verts))
 
