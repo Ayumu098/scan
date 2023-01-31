@@ -18,7 +18,7 @@ def get_file_locations() -> tuple[str]:
 
     parser = argparse.ArgumentParser(prog='Document Scanner GUI Application')
 
-    parser.add_argument('--input',  default="src\input.jpg",
+    parser.add_argument('--input',  default="src\input.png",
                         type=str, help="File location of the image to be scanned. Defaults to \"src\input.png\".")
 
     parser.add_argument('--output', default="src\output.png",
