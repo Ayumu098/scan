@@ -20,15 +20,13 @@ def arrange_clockwise_from_upper_left(points: list[list[int]]) -> list[list[int]
     assert all(len(point) == 2 for point in points), \
         f"Each point must have exactly 2 coordinates"
 
-    # Assuming an origin [0,0] at upper left corner,
-    # the lowest  distance from origin is upper-leftmost point, and
-    # the largest distance from origin is lower-rightmost point
-    distance_sorted_points = sorted(points, key=sum)
-    upper_left, lower_right = distance_sorted_points[::3]
-
-    # For remaining points, the upper-right is the point with highest value of x
-    lower_left, upper_right = [point for point in sorted(points)
-                               if point not in [upper_left, lower_right]]
+    # Assuming an origin [0,0] at upper left corner, the two upper points have the smallest y coordinate
+    upper =  sorted(points, key=lambda point: point[1])[:2]
+    upper_left, upper_right = sorted(upper, key=lambda point: point[0])
+    
+    # Assuming an origin [0,0] at upper left corner, the two lower points have the smallest y coordinate
+    lower  = [point for point in points if point not in upper]
+    lower_left, lower_right = sorted(lower, key=lambda point: point[0])
 
     # Clockwise arrangement, starting at upper left point
     return [upper_left, upper_right, lower_right, lower_left]
